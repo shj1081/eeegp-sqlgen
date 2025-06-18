@@ -28,11 +28,22 @@ uv pip install -e .
 
 ## 사용법
 
-### 명령줄 실행
+### query console을 이용한 max id 조회
+
+```sql
+SELECT
+    (SELECT MAX(id) FROM year)       AS year_max;
+    (SELECT MAX(id) FROM category)   AS cat_max,
+    (SELECT MAX(id) FROM post)       AS post_max,
+    (SELECT MAX(id) FROM exhibition) AS exh_max,
+    (SELECT MAX(id) FROM file)       AS file_max,
+```
+
+### CLI 사용
 
 ```bash
 # db max id 지정 / 출력 SQL 파일 지정 / 연도 세그먼트 지정
-eeegp 명단.xlsx --cat-max 10 --post-max 20 --exh-max 30 --file-max 40 -o output.sql --year 20252
+eeegp 명단.xlsx --year-max 7 --cat-max 10 --post-max 20 --exh-max 30 --file-max 40 -o output.sql --year 20252
 ```
 
 ### Python API 사용
@@ -45,6 +56,7 @@ df = pd.read_excel("명단.xlsx")
 
 generate_sql(
     df,
+    year_max=7,  # 현재 year 테이블의 최대 ID
     cat_max=10,  # 현재 category 테이블의 최대 ID
     post_max=20,  # 현재 post 테이블의 최대 ID
     exh_max=30,  # 현재 exhibition 테이블의 최대 ID

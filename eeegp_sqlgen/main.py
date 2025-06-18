@@ -2,7 +2,7 @@
 전시회 명단 엑셀 파일에서 데이터를 읽어 SQL INSERT 문을 생성하는 모듈
 
 필수 열:
-  • 분반        → category_name (= "분반41" 형태로 자동 변환)
+  • 분반        → category_name
   • 작품명      → post_title  &  exhibition.title
 
 선택 열:
@@ -30,6 +30,7 @@ import pandas as pd
 def generate_sql(
     df: pd.DataFrame,
     *,
+    year_max: int,
     cat_max: int,
     post_max: int,
     exh_max: int,
@@ -41,12 +42,13 @@ def generate_sql(
     
     Args:
         df: 엑셀에서 읽어온 DataFrame
+        year_max: year 테이블의 현재 최대 ID (MAX(id) 값)
         cat_max: category 테이블의 현재 최대 ID (MAX(id) 값)
         post_max: post 테이블의 현재 최대 ID (MAX(id) 값)
         exh_max: exhibition 테이블의 현재 최대 ID (MAX(id) 값)
         file_max: file 테이블의 현재 최대 ID (MAX(id) 값)
         out_path: 생성할 SQL 파일 경로
-        year_segment: 파일 업로드 경로의 하위 폴더명 (예: '20251')
+        year_segment: 파일 업로드 경로의 하위 폴더명 및 year 테이블에 추가할 이름 (예: '20251')
     
     각 테이블의 새 ID는 현재 최대값 + 1부터 순차적으로 부여됩니다.
     """
@@ -117,6 +119,20 @@ def generate_sql(
         return f"INSERT INTO `{table}` ({col_sql}) VALUES\n{val_sql};\n"
 
     # 2. 기본 변수 초기화
+    # 2-A) year
+    year_rows = []
+    next_year = year_max
+    next_year += 1
+    year_id = next_year
+    year_rows.append(
+        {
+            "id": year_id,
+            "name": year_segment,
+            "createdAt": now,
+            "updatedAt": now,
+        }
+    )
+    
     cat_map: dict[str, int] = {}
     post_map: dict[str, int] = {}
 
@@ -129,13 +145,25 @@ def generate_sql(
         file_max,
     )
 
-    # 2-A) category
-    for name in df["category_name"].unique():
-        next_cat += 1
-        cat_map[name] = next_cat
-        cat_rows.append({"id": next_cat, "name": name})
+    # 2-B) category
+    cat_rows = []
+    next_cat = cat_max
+    for _, r in df.iterrows():
+        cat_name = str(r["category_name"])
+        if cat_name not in cat_map:
+            next_cat += 1
+            cat_map[cat_name] = next_cat
+            cat_rows.append(
+                {
+                    "id": next_cat,
+                    "name": cat_name,
+                    "YearId": year_id,
+                    "createdAt": now,
+                    "updatedAt": now,
+                }
+            )
 
-    # 2-B) post
+    # 2-C) post
     for _, r in df.iterrows():
         row_id = r["post_id"]
         next_post += 1
@@ -150,7 +178,7 @@ def generate_sql(
             }
         )
 
-    # 2-C) exhibition (row 당 1개)
+    # 2-D) exhibition (row 당 1개)
     for _, r in df.iterrows():
         next_exh += 1
         exh_rows.append(
@@ -171,7 +199,7 @@ def generate_sql(
             }
         )
 
-    # 2-D) file  (모든 타입 → uploads/videos/<year_segment>/)
+    # 2-E) file  (모든 타입 → uploads/videos/<year_segment>/)
     UPLOAD_ROOT = "/uploads"
     FOLDER = "videos"
 
@@ -249,6 +277,7 @@ def generate_sql(
     sql = (
         f"-- AUTO-GENERATED {now}\n"
         "SET NAMES utf8mb4;\nSET FOREIGN_KEY_CHECKS = 0;\n"
+        + build_insert("year", year_rows)
         + build_insert("category", cat_rows)
         + build_insert("post", post_rows)
         + build_insert("exhibition", exh_rows)
