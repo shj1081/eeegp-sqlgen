@@ -4,7 +4,6 @@
 
 명단 엑셀 파일을 기반으로 `category`, `post`, `exhibition`, `file` 테이블에 대한 `SQL INSERT` 문 자동 생성 기능 제공
 
-
 ## 설치 방법 (uv 기반)
 
 ### 1. 가상환경 생성
@@ -23,7 +22,6 @@ uv pip install -e .
 
 - 의존성 자동 설치
 - `egg-info` 디렉토리는 `.gitignore`를 통해 무시 권장
-
 
 ## 사용법
 
@@ -65,7 +63,6 @@ generate_sql(
 )
 ```
 
-
 ## 엑셀 파일 양식
 
 ### 필수 열
@@ -82,10 +79,9 @@ generate_sql(
 | `조원` 또는 `participants`  | 참여 학생 명단                   |
 | `담당교수` 또는 `professor` | 담당 교수 이름                   |
 | `파일명` 또는 `file_names`  | 슬래시(`/`)로 구분된 다중 파일명 |
-| `thumbnail`                 | 썸네일 이미지 파일명             |
-| `poster`                    | 포스터 이미지 파일명             |
-| `video`                     | 영상 파일 파일명                 |
-
+| `썸네일` 또는 `thumbnail`   | 썸네일 이미지 파일명             |
+| `포스터` 또는 `poster`      | 포스터 이미지 파일명             |
+| `영상` 또는 `video`         | 영상 파일 파일명                 |
 
 ## 정리 방법
 
@@ -95,7 +91,6 @@ generate_sql(
 find . -type d -name "__pycache__" -exec rm -r {} +
 rm -rf *.egg-info build dist
 ```
-
 
 ## 참고 사항
 
