@@ -1,0 +1,17 @@
+[project]
+name = "eeegp-sqlgen"
+version = "0.1.0"
+description = "전시회 엑셀 명단을 SQL INSERT로 변환하는 도구"
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+dependencies = ["pandas", "openpyxl"]
+requires-python = ">=3.8"
+
+[project.scripts]
+eeegp = "eeegp_sqlgen.cli:main"
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
