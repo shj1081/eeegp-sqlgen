@@ -1,7 +1,8 @@
-# eeegp-sqlgen: 전전 졸업작품 발표회 엑셀 기반 SQL 생성기
+# eeegp-sqlgen
 
-전기전자컴퓨터공학부 졸업작품 발표회용 명단 엑셀 파일을 기반으로
-`category`, `post`, `exhibition`, `file` 테이블에 대한 `SQL INSERT` 문 자동 생성 기능 제공
+전전 졸업작품 발표회 엑셀 기반 SQL 생성기
+
+명단 엑셀 파일을 기반으로 `category`, `post`, `exhibition`, `file` 테이블에 대한 `SQL INSERT` 문 자동 생성 기능 제공
 
 
 ## 설치 방법 (uv 기반)
