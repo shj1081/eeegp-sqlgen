@@ -3,7 +3,6 @@
 전기전자컴퓨터공학부 졸업작품 발표회용 명단 엑셀 파일을 기반으로
 `category`, `post`, `exhibition`, `file` 테이블에 대한 `SQL INSERT` 문 자동 생성 기능 제공
 
----
 
 ## 설치 방법 (uv 기반)
 
@@ -24,7 +23,6 @@ uv pip install -e .
 - 의존성 자동 설치
 - `egg-info` 디렉토리는 `.gitignore`를 통해 무시 권장
 
----
 
 ## 사용법
 
@@ -66,7 +64,6 @@ generate_sql(
 )
 ```
 
----
 
 ## 엑셀 파일 양식
 
@@ -88,7 +85,6 @@ generate_sql(
 | `poster`                    | 포스터 이미지 파일명             |
 | `video`                     | 영상 파일 파일명                 |
 
----
 
 ## 정리 방법
 
@@ -99,7 +95,6 @@ find . -type d -name "__pycache__" -exec rm -r {} +
 rm -rf *.egg-info build dist
 ```
 
----
 
 ## 참고 사항
 
