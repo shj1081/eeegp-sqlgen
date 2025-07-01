@@ -29,11 +29,11 @@ uv pip install -e .
 
 ```sql
 SELECT
-    (SELECT MAX(id) FROM year)       AS year_max;
-    (SELECT MAX(id) FROM category)   AS cat_max,
-    (SELECT MAX(id) FROM post)       AS post_max,
-    (SELECT MAX(id) FROM exhibition) AS exh_max,
-    (SELECT MAX(id) FROM file)       AS file_max,
+  (SELECT MAX(id) FROM year)       AS year_max,
+  (SELECT MAX(id) FROM category)   AS cat_max,
+  (SELECT MAX(id) FROM post)       AS post_max,
+  (SELECT MAX(id) FROM exhibition) AS exh_max,
+  (SELECT MAX(id) FROM file)       AS file_max;
 ```
 
 ### CLI 사용
